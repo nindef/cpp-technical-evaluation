@@ -21,7 +21,7 @@ services:
     image: "jrottenberg/ffmpeg:4.2-nvidia"
     privileged: true
     volumes:
-      - ../videos:/videos
+      - ../video:/videos
       - ./stream-producer/:/producers
     environment:
       - RTSP_PORT=61250
