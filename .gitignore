@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+*.user
+bin
+/video/*.mp4
