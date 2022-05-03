@@ -28,6 +28,6 @@ else()
 endif()
 
 find_package(OpenCV REQUIRED COMPONENTS core highgui)
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets MultimediaWidgets Multimedia)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
 
-target_link_libraries(MotionRecorder ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets Qt5::MultimediaWidgets Qt5::Multimedia)
+target_link_libraries(MotionRecorder ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
