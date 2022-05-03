@@ -9,11 +9,11 @@ class FrameDataModel;
 class MotionController;
 class FrameAcquisitor;
 
-class CameraMotionDetection
+class MotionRecorderManager
 {
 public:
-    CameraMotionDetection (std::string sourceStreamPath, std::string outputVideoBaseName);
-    ~CameraMotionDetection () {};
+    MotionRecorderManager (std::string sourceStreamPath, std::string outputVideoBaseName);
+    ~MotionRecorderManager () {};
 
     void startMotionDetection ();
     void stopMotionDetection();

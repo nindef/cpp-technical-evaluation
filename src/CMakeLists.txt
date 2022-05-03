@@ -10,10 +10,10 @@ add_executable(MotionRecorder main.cpp
                           FrameDataModel.cpp
                           FrameWriter.h
                           FrameWriter.cpp
-                          CameraMotionDetection.h
-                          CameraMotionDetection.cpp
-                          CameraMotionDetectionWidget.h
-                          CameraMotionDetectionWidget.cpp
+                          MotionRecorderManager.h
+                          MotionRecorderManager.cpp
+                          MotionRecorderWidget.h
+                          MotionRecorderWidget.cpp
                           motion_detector/include/motion_detector.hpp
                           resources.qrc
                       )

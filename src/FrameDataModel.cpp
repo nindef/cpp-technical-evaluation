@@ -1,17 +1,12 @@
 #include "FrameDataModel.h"
 
 
-FrameDataModel::FrameDataModel()
-{
-
-}
-
 void FrameDataModel::setSrcVideoConfig(double fourcc, double fps, Size size)
 {
-    mSrcConfig = SourceVideoConfig(fourcc, fps, size);
+    mSrcConfig = VideoConfig(fourcc, fps, size);
 }
 
-FrameDataModel::SourceVideoConfig& FrameDataModel::getSrcVideoConfig()
+FrameDataModel::VideoConfig& FrameDataModel::getSrcVideoConfig()
 {
     return mSrcConfig;
 }
@@ -21,18 +16,6 @@ void FrameDataModel::storeFrame(Mat frame)
     mMutex.lock();
     mFramesBuffer.push_back(std::move(frame));
     mMutex.unlock();
-}
-
-Mat FrameDataModel::getFrame(int frameIndex)
-{
-    Mat frame;
-    mMutex.lock();
-    if (!mFramesBuffer.empty() && frameIndex < mFramesBuffer.size())
-    {
-        frame = mFramesBuffer[frameIndex];
-    }
-    mMutex.unlock();
-    return frame;
 }
 
 bool FrameDataModel::getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize)

@@ -38,11 +38,16 @@ void FrameWriter::writeFrame(Mat frame)
         if (!outputDir.exists())
             outputDir.mkdir(videosFolder);
 
-        const auto sourceConfig = mDataModel->getSrcVideoConfig();
-        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, sourceConfig.fourcc, sourceConfig.fps, sourceConfig.size);
+        mSourceConfig = mDataModel->getSrcVideoConfig();
+        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, mSourceConfig.fourcc, mSourceConfig.fps, mSourceConfig.size);
     }
 
     mVideoWriter->write(frame);
+}
+
+double FrameWriter::getFPS() const
+{
+    return mSourceConfig.fps;
 }
 
 void FrameWriter::closeFile()

@@ -1,6 +1,6 @@
 #include "MainWindow.h"
-#include "CameraMotionDetection.h"
-#include "CameraMotionDetectionWidget.h"
+#include "MotionRecorderManager.h"
+#include "MotionRecorderWidget.h"
 
 #include <QCoreApplication>
 #include <QGridLayout>
@@ -73,11 +73,11 @@ void MainWindow::onConfigButtonClicked()
     }
 }
 
-void MainWindow::addCameraMotionDetection(std::shared_ptr<CameraMotionDetection> motionDetection)
+void MainWindow::addMotionRecorder(std::shared_ptr<MotionRecorderManager> motionDetection)
 {
-    const auto camWidget = new CameraMotionDetectionWidget(motionDetection, this);
+    const auto camWidget = new MotionRecorderWidget(motionDetection, this);
     connect (this, &MainWindow::secondsAfterMotionFinishesChanged,
-             camWidget, &CameraMotionDetectionWidget::onSecondsAfterMotionFinishesChanged);
+             camWidget, &MotionRecorderWidget::onSecondsAfterMotionFinishesChanged);
     camWidget->setParent(this);
     mGlobalLayout->addWidget(camWidget);
 

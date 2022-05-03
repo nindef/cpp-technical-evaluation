@@ -1,18 +1,17 @@
-#include "CameraMotionDetection.h"
+#include "MotionRecorderManager.h"
 #include "FrameAcquisitor.h"
 #include "FrameDataModel.h"
 #include "FrameWriter.h"
 #include "MotionController.h"
 
 
-CameraMotionDetection::CameraMotionDetection(std::string sourceStreamPath, std::string outputVideoBaseName) : mSourceStreamPath (sourceStreamPath)
+MotionRecorderManager::MotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) : mSourceStreamPath (sourceStreamPath)
 {
     mDataModel = std::make_shared<FrameDataModel>();
     const auto frameWriter = std::make_shared<FrameWriter>();
     frameWriter->setDataModel(mDataModel);
     frameWriter->setOutputVideoBaseName(outputVideoBaseName);
     const auto motionDetector = std::make_shared<MockMotionDetector<Mat>>();
-    motionDetector->initializeMotionVector();
 
     mFrameAcquisitor = std::make_shared<FrameAcquisitor>();
     mFrameAcquisitor->setDataModel(mDataModel);
@@ -24,7 +23,7 @@ CameraMotionDetection::CameraMotionDetection(std::string sourceStreamPath, std::
     mMotionController->setFrameWriter(frameWriter);
 }
 
-void CameraMotionDetection::startMotionDetection()
+void MotionRecorderManager::startMotionDetection()
 {
     mThreadRunning = true;
     mMotionDetected = false;
@@ -35,7 +34,7 @@ void CameraMotionDetection::startMotionDetection()
     mCallbackFunction(mThreadRunning);
 }
 
-void CameraMotionDetection::stopMotionDetection ()
+void MotionRecorderManager::stopMotionDetection ()
 {
     if (mThreadRunning)
     {
@@ -54,32 +53,32 @@ void CameraMotionDetection::stopMotionDetection ()
     mCallbackFunction(mThreadRunning);
 }
 
-void CameraMotionDetection::setCallbackFunctionOnStatusChange(std::function<void (bool)> callbackFunction)
+void MotionRecorderManager::setCallbackFunctionOnStatusChange(std::function<void (bool)> callbackFunction)
 {
     mCallbackFunction = callbackFunction;
 }
 
-void CameraMotionDetection::setSecondsAfterMotionFinishes(int seconds)
+void MotionRecorderManager::setSecondsAfterMotionFinishes(int seconds)
 {
     mSecondsAfterMotionFinishes = seconds;
 }
 
-const std::string &CameraMotionDetection::getSourceStreamPath() const
+const std::string &MotionRecorderManager::getSourceStreamPath() const
 {
     return mSourceStreamPath;
 }
 
-bool CameraMotionDetection::isMotionDetected() const
+bool MotionRecorderManager::isMotionDetected() const
 {
     return mMotionDetected;
 }
 
-bool CameraMotionDetection::isMotionDetectionRunning() const
+bool MotionRecorderManager::isMotionDetectionRunning() const
 {
     return mThreadRunning;
 }
 
-bool CameraMotionDetection::getCurrentFrame(QPixmap &pixmap, QSize size)
+bool MotionRecorderManager::getCurrentFrame(QPixmap &pixmap, QSize size)
 {
     if (mThreadRunning)
         return mDataModel->getCurrentFramePixmap(pixmap, size);

@@ -3,10 +3,6 @@
 #include "FrameDataModel.h"
 
 
-FrameAcquisitor::FrameAcquisitor()
-{
-}
-
 FrameAcquisitor::~FrameAcquisitor()
 {
     if (mVideoCapture != nullptr)
@@ -29,9 +25,8 @@ void FrameAcquisitor::configure(std::string sourceStreamPath, VideoCaptureAPIs v
 #endif
 }
 
-void FrameAcquisitor::runAcquisition(bool* frameControlRunning)
+void FrameAcquisitor::runAcquisition(bool* threadRunning)
 {
-    mThreadRunning = frameControlRunning;
     if (mVideoCapture != nullptr && mVideoCapture->isOpened())
     {
         const auto fourcc = mVideoCapture->get(CAP_PROP_FOURCC);
@@ -39,7 +34,7 @@ void FrameAcquisitor::runAcquisition(bool* frameControlRunning)
         const auto size = Size(mVideoCapture->get(CAP_PROP_FRAME_WIDTH), mVideoCapture->get(CAP_PROP_FRAME_HEIGHT));
         mDataModel->setSrcVideoConfig(fourcc, fps, size);
 
-        while(*mThreadRunning)
+        while(*threadRunning)
         {
             Mat frame;
             if (mVideoCapture->read(frame))

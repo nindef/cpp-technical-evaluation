@@ -13,6 +13,11 @@ template<typename A>
 class MockMotionDetector final
 {
 public:
+    MockMotionDetector ()
+    {
+        initializeMotionVector();
+    }
+
     void initializeMotionVector ()
     {
         auto index = FPS * 5;
@@ -40,11 +45,5 @@ public:
     }
 private:
     std::vector<Motion> mock_motion;
-//    const std::vector<Motion> mock_motion = {
-//    Motion::NO_MOTION,Motion::NO_MOTION,Motion::NO_MOTION,
-//    Motion::MOTION,Motion::MOTION, Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,
-//    Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,
-//    Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::MOTION,Motion::NO_MOTION, Motion::NO_MOTION, Motion::NO_MOTION};
-    
     std::uint64_t index = 0;
 };
