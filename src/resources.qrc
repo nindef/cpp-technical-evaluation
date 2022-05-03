@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="record">../resources/baseline_fiber_manual_record_black_24dp.png</file>
+        <file alias="stop">../resources/baseline_stop_black_24dp.png</file>
+        <file alias="cam_rec">../resources/baseline_videocam_black_24dp.png</file>
+        <file alias="cam_rec_blink">../resources/baseline_videocam_black_24dp_blink.png</file>
+        <file alias="cam_no_motion">../resources/baseline_videocam_no_mot_black_24dp.png</file>
+        <file alias="cam_off">../resources/baseline_videocam_off_black_24dp.png</file>
+    </qresource>
+</RCC>
