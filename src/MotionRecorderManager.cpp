@@ -1,23 +1,24 @@
 #include "MotionRecorderManager.h"
-#include "FrameAcquisitor.h"
-#include "FrameDataModel.h"
-#include "FrameWriter.h"
-#include "MotionController.h"
+
+#include "CV_FrameAcquisitor.h"
+#include "CV_MotionController.h"
+#include "CV_FrameWriter.h"
+#include "CV_FrameDataModel.h"
 
 
 MotionRecorderManager::MotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) : mSourceStreamPath (sourceStreamPath)
 {
-    mDataModel = std::make_shared<FrameDataModel>();
-    const auto frameWriter = std::make_shared<FrameWriter>();
+    mDataModel = std::make_shared<CV_FrameDataModel>();
+    const auto frameWriter = std::make_shared<CV_FrameWriter>();
     frameWriter->setDataModel(mDataModel);
     frameWriter->setOutputVideoBaseName(outputVideoBaseName);
     const auto motionDetector = std::make_shared<MockMotionDetector<Mat>>();
 
-    mFrameAcquisitor = std::make_shared<FrameAcquisitor>();
+    mFrameAcquisitor = std::make_shared<CV_FrameAcquisitor>();
     mFrameAcquisitor->setDataModel(mDataModel);
-    mFrameAcquisitor->configure(sourceStreamPath, cv::CAP_FFMPEG);
+    mFrameAcquisitor->configure(sourceStreamPath);
 
-    mMotionController = std::make_shared<MotionController>();
+    mMotionController = std::make_shared<CV_MotionController>();
     mMotionController->setMotionDetector(motionDetector);
     mMotionController->setDataModel(mDataModel);
     mMotionController->setFrameWriter(frameWriter);
@@ -27,8 +28,8 @@ void MotionRecorderManager::startMotionDetection()
 {
     mThreadRunning = true;
     mMotionDetected = false;
-    mThreadFrameAcquisition = new std::thread (&FrameAcquisitor::runAcquisition, mFrameAcquisitor, &mThreadRunning);
-    mThreadMotionController = new std::thread (&MotionController::startMotionDetection, mMotionController, &mThreadRunning,
+    mThreadFrameAcquisition = new std::thread (&CV_FrameAcquisitor::runAcquisition, mFrameAcquisitor, &mThreadRunning);
+    mThreadMotionController = new std::thread (&CV_MotionController::startMotionDetection, mMotionController, &mThreadRunning,
                                                &mSecondsAfterMotionFinishes, &mMotionDetected);
 
     mCallbackFunction(mThreadRunning);

@@ -1,30 +1,12 @@
-#include "FrameWriter.h"
+#include "CV_FrameWriter.h"
 
-#include "FrameDataModel.h"
-
-#include "opencv2/imgproc.hpp"
-#include "opencv2/imgcodecs/imgcodecs_c.h"
 #include <QDateTime>
 #include <QDir>
 #include <QStandardPaths>
 #include <QApplication>
 
-FrameWriter::FrameWriter()
-{
-    mVideoWriter = std::make_shared<VideoWriter>();
-}
 
-void FrameWriter::setOutputVideoBaseName(const std::string &outputVideoBaseName)
-{
-    mOutputVideoBaseName = outputVideoBaseName;
-}
-
-void FrameWriter::setDataModel (std::shared_ptr<FrameDataModel> model)
-{
-    mDataModel = model;
-}
-
-void FrameWriter::writeFrame(Mat frame)
+void CV_FrameWriter::writeFrame(Mat frame)
 {
     assert(mDataModel != nullptr);
 
@@ -39,18 +21,13 @@ void FrameWriter::writeFrame(Mat frame)
             outputDir.mkdir(videosFolder);
 
         mSourceConfig = mDataModel->getSrcVideoConfig();
-        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, mSourceConfig.fourcc, mSourceConfig.fps, mSourceConfig.size);
+        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, mSourceConfig.fourcc, mSourceConfig.fps, Size(mSourceConfig.width, mSourceConfig.height));
     }
 
     mVideoWriter->write(frame);
 }
 
-double FrameWriter::getFPS() const
-{
-    return mSourceConfig.fps;
-}
-
-void FrameWriter::closeFile()
+void CV_FrameWriter::closeFile()
 {
     mVideoWriter->release();
 }

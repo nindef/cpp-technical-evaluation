@@ -1,13 +1,16 @@
 #pragma once
 
+#include "IFrameDataModel.h"
+
 #include <iostream>
 #include <thread>
 
 #include <QPixmap>
 
-class FrameDataModel;
-class MotionController;
-class FrameAcquisitor;
+namespace cv { class Mat; }
+class CV_FrameDataModel;
+class CV_MotionController;
+class CV_FrameAcquisitor;
 
 class MotionRecorderManager
 {
@@ -37,8 +40,8 @@ private:
     std::function<void (bool)> mCallbackFunction;
 
 
-    std::shared_ptr<FrameDataModel> mDataModel;
-    std::shared_ptr<FrameAcquisitor> mFrameAcquisitor;
-    std::shared_ptr<MotionController> mMotionController;
+    std::shared_ptr<CV_FrameDataModel> mDataModel;
+    std::shared_ptr<CV_FrameAcquisitor> mFrameAcquisitor;
+    std::shared_ptr<CV_MotionController> mMotionController;
 
 };

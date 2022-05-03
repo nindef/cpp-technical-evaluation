@@ -2,18 +2,21 @@
 add_executable(MotionRecorder main.cpp
                           MainWindow.cpp
                           MainWindow.h
-                          FrameAcquisitor.h
-                          FrameAcquisitor.cpp
-                          MotionController.h
-                          MotionController.cpp
-                          FrameDataModel.h
-                          FrameDataModel.cpp
-                          FrameWriter.h
-                          FrameWriter.cpp
-                          MotionRecorderManager.h
-                          MotionRecorderManager.cpp
                           MotionRecorderWidget.h
                           MotionRecorderWidget.cpp
+                          IFrameAcquisitor.h
+                          CV_FrameAcquisitor.h
+                          CV_FrameAcquisitor.cpp
+                          IMotionController.h
+                          CV_MotionController.h
+                          IFrameDataModel.h
+                          CV_FrameDataModel.h
+                          CV_FrameDataModel.cpp
+                          IFrameWriter.h
+                          CV_FrameWriter.h
+                          CV_FrameWriter.cpp
+                          MotionRecorderManager.h
+                          MotionRecorderManager.cpp
                           motion_detector/include/motion_detector.hpp
                           resources.qrc
                       )

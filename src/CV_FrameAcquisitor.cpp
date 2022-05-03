@@ -1,22 +1,11 @@
-#include "FrameAcquisitor.h"
+#include "CV_FrameAcquisitor.h"
 
-#include "FrameDataModel.h"
+#include "IFrameDataModel.h"
 
 
-FrameAcquisitor::~FrameAcquisitor()
+void CV_FrameAcquisitor::configure(std::string sourceStreamPath)
 {
-    if (mVideoCapture != nullptr)
-        mVideoCapture->release();
-}
-
-void FrameAcquisitor::setDataModel (std::shared_ptr<FrameDataModel> model)
-{
-    mDataModel = model;
-}
-
-void FrameAcquisitor::configure(std::string sourceStreamPath, VideoCaptureAPIs videoCaptureAPI)
-{
-    mVideoCapture = std::make_shared<VideoCapture>(std::move(sourceStreamPath), videoCaptureAPI);
+    mVideoCapture = std::make_shared<VideoCapture>(std::move(sourceStreamPath), VideoCaptureAPIs::CAP_ANY);
 
 #if WIN32
     _putenv_s("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp");
@@ -25,14 +14,15 @@ void FrameAcquisitor::configure(std::string sourceStreamPath, VideoCaptureAPIs v
 #endif
 }
 
-void FrameAcquisitor::runAcquisition(bool* threadRunning)
+void CV_FrameAcquisitor::runAcquisition(bool* threadRunning)
 {
     if (mVideoCapture != nullptr && mVideoCapture->isOpened())
     {
         const auto fourcc = mVideoCapture->get(CAP_PROP_FOURCC);
         const auto fps = mVideoCapture->get(CAP_PROP_FPS);
         const auto size = Size(mVideoCapture->get(CAP_PROP_FRAME_WIDTH), mVideoCapture->get(CAP_PROP_FRAME_HEIGHT));
-        mDataModel->setSrcVideoConfig(fourcc, fps, size);
+        IFrameDataModel<Mat>::VideoConfig videoConfig (fourcc, fps, size.width, size.height);
+        mDataModel->setSrcVideoConfig(videoConfig);
 
         while(*threadRunning)
         {
