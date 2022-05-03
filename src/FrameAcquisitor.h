@@ -4,6 +4,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
+
 using namespace cv;
 
 class FrameDataModel;
@@ -11,9 +12,11 @@ class FrameDataModel;
 class FrameAcquisitor
 {
 public:
-    FrameAcquisitor (std::shared_ptr<FrameDataModel> model);
+    FrameAcquisitor ();
     ~FrameAcquisitor();
 
+    void setDataModel(std::shared_ptr<FrameDataModel> model);
+    void configure (std::string sourceStreamPath, VideoCaptureAPIs videoCaptureAPI);
     void runAcquisition (bool* frameControlRunning);
 
 private:

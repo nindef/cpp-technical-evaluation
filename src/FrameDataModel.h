@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QPixmap>
 #include <deque>
 #include <mutex>
 #include <opencv2/core/mat.hpp>
@@ -33,8 +34,12 @@ public:
     void storeFrame(Mat frame);
     Mat getFrame (int frameIndex);
 
+    bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize);
+
     bool getFirstTwoFrames (Mat& first, Mat& second);
     void freeNFrames (int numFramesToFree);
+
+    void freeAllFrames ();
 
 private:
     std::mutex mMutex;

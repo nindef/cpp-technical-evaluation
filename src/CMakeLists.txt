@@ -10,7 +10,13 @@ add_executable(MotionRecorder main.cpp
                           FrameDataModel.cpp
                           FrameWriter.h
                           FrameWriter.cpp
-                          motion_detector/include/motion_detector.hpp)
+                          CameraMotionDetection.h
+                          CameraMotionDetection.cpp
+                          CameraMotionDetectionWidget.h
+                          CameraMotionDetectionWidget.cpp
+                          motion_detector/include/motion_detector.hpp
+                          resources.qrc
+                      )
 
 if (CMAKE_BUILD_TYPE EQUAL "RELEASE")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${MotionRecorder_SOURCE_DIR}/bin/release)

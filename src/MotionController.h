@@ -21,7 +21,7 @@ public:
 
     void setFrameWriter(std::shared_ptr<FrameWriter> frameWriter);
 
-    void startMotionDetection (bool* frameControlRunning);
+    void startMotionDetection (bool* frameControlRunning, int* secondsAfterMotionFinishes, bool* outMotionDetected);
 
 private:
     bool *mRunning = nullptr;

@@ -23,7 +23,7 @@ void MotionController::setFrameWriter(std::shared_ptr<FrameWriter> frameWriter)
     mFrameWriter = frameWriter;
 }
 
-void MotionController::startMotionDetection (bool* frameControlRunning)
+void MotionController::startMotionDetection (bool* frameControlRunning, int* secondsAfterMotionFinishes, bool* outMotionDetected)
 {
     assert(frameControlRunning != nullptr);
     assert(mMotionDetector != nullptr);
@@ -31,7 +31,7 @@ void MotionController::startMotionDetection (bool* frameControlRunning)
 
     mRunning = frameControlRunning;
 
-    auto numFramesAfterMotionUndetected = 30;
+    auto numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * FPS;
     while (*mRunning)
     {
         Mat first, second;
@@ -41,13 +41,15 @@ void MotionController::startMotionDetection (bool* frameControlRunning)
 
             if (motionDetected)
             {
-                numFramesAfterMotionUndetected = 30;
-                std::cout << "motion detected" << std::endl;
+                *outMotionDetected = true;
+                numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * FPS;
                 mFrameWriter->writeFrame(std::move(second));
                 mDataModel->freeNFrames(1);
             }
             else if (numFramesAfterMotionUndetected > 0)
             {
+                *outMotionDetected = true;
+
                 //write during N frames more
                 numFramesAfterMotionUndetected--;
                 mFrameWriter->writeFrame(std::move(second));
@@ -55,9 +57,10 @@ void MotionController::startMotionDetection (bool* frameControlRunning)
             }
             else
             {
-                std::cout << "motion not detected" << std::endl;
+                *outMotionDetected = false;
                 mDataModel->freeNFrames(1);
             }
         }
     }
+    mFrameWriter->closeFile ();
 }

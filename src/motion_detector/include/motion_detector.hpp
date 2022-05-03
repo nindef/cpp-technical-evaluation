@@ -2,9 +2,7 @@
 
 using namespace std;
 
-#ifndef FPS
-#define FPS 25
-#endif
+constexpr auto FPS = 25;
 
 enum class Motion{
     MOTION,
@@ -32,6 +30,8 @@ public:
         index = FPS * 10;
         while (index--)
             mock_motion.emplace_back(Motion::NO_MOTION);
+
+        index = std::rand() % mock_motion.size();
     }
 
     Motion detect(const A & previous_frame, const A & current_frame){

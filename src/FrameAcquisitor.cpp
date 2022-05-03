@@ -3,25 +3,8 @@
 #include "FrameDataModel.h"
 
 
-FrameAcquisitor::FrameAcquisitor(std::shared_ptr<FrameDataModel> model) : mDataModel(model)
+FrameAcquisitor::FrameAcquisitor()
 {
-    const std::string sourceStreamPath = "rtsp://localhost:61250/cam01";
-    mVideoCapture = std::make_shared<VideoCapture>(sourceStreamPath, CAP_FFMPEG);
-
-#if WIN32
-    _putenv_s("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp");
-#else
-    setenv("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp", 1);
-#endif
-    if (mVideoCapture->isOpened())
-    {
-        const auto fourcc = mVideoCapture->get(CAP_PROP_FOURCC);
-        const auto fps = mVideoCapture->get(CAP_PROP_FPS);
-        const auto size = Size(mVideoCapture->get(CAP_PROP_FRAME_WIDTH), mVideoCapture->get(CAP_PROP_FRAME_HEIGHT));
-        mDataModel->setSrcVideoConfig(fourcc, fps, size);
-    }
-    else
-        mVideoCapture = nullptr;
 }
 
 FrameAcquisitor::~FrameAcquisitor()
@@ -30,16 +13,36 @@ FrameAcquisitor::~FrameAcquisitor()
         mVideoCapture->release();
 }
 
+void FrameAcquisitor::setDataModel (std::shared_ptr<FrameDataModel> model)
+{
+    mDataModel = model;
+}
+
+void FrameAcquisitor::configure(std::string sourceStreamPath, VideoCaptureAPIs videoCaptureAPI)
+{
+    mVideoCapture = std::make_shared<VideoCapture>(std::move(sourceStreamPath), videoCaptureAPI);
+
+#if WIN32
+    _putenv_s("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp");
+#else
+    setenv("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp", 1);
+#endif
+}
+
 void FrameAcquisitor::runAcquisition(bool* frameControlRunning)
 {
     mThreadRunning = frameControlRunning;
-    if (mVideoCapture != nullptr)
+    if (mVideoCapture != nullptr && mVideoCapture->isOpened())
     {
-        Mat frame;
+        const auto fourcc = mVideoCapture->get(CAP_PROP_FOURCC);
+        const auto fps = mVideoCapture->get(CAP_PROP_FPS);
+        const auto size = Size(mVideoCapture->get(CAP_PROP_FRAME_WIDTH), mVideoCapture->get(CAP_PROP_FRAME_HEIGHT));
+        mDataModel->setSrcVideoConfig(fourcc, fps, size);
+
         while(*mThreadRunning)
         {
-            *mVideoCapture >> frame;
-            if (!frame.empty())
+            Mat frame;
+            if (mVideoCapture->read(frame))
                 mDataModel->storeFrame(frame);
         }
     }
