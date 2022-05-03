@@ -19,7 +19,7 @@ add_executable(MotionRecorder main.cpp
                           MotionRecorderManager.cpp
                           motion_detector/include/motion_detector.hpp
                           resources.qrc
-                      )
+                          ${APP_ICON_RESOURCE_WINDOWS})
 
 if (CMAKE_BUILD_TYPE EQUAL "RELEASE")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${MotionRecorder_SOURCE_DIR}/bin/release)
