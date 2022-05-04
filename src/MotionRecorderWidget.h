@@ -49,8 +49,8 @@ private:
     QLabel* mCamRecordingLabel = nullptr;
     QLabel* mFrameLabel = nullptr;
     bool mIconBlinkVisible = false;
-    QIcon mMotionDetIcon;
-    QIcon mStatusRecordingIcon;
+    QIcon mRecordingStatusIcon;
+    QIcon mRecordButtonIcon;
     QPushButton* mStatusDetectionButton = nullptr;
     QTimer* mIconBlinkTimer = nullptr;
 

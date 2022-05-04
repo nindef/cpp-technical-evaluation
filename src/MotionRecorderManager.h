@@ -26,13 +26,13 @@ public:
     void setSecondsAfterMotionFinishes (int seconds);
 
     const std::string& getSourceStreamPath() const;
-    bool isMotionDetected () const;
+    bool isRecordingVideo () const;
     bool isMotionDetectionRunning () const;
     bool getCurrentFrame (QPixmap& pixmap, QSize size);
 
 private:
     bool mThreadRunning = false;
-    bool mMotionDetected = false;
+    bool mIsRecording = false;
     int mSecondsAfterMotionFinishes = 2;
     std::string mSourceStreamPath;
     std::thread * mThreadFrameAcquisition;

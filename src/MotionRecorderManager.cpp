@@ -27,10 +27,10 @@ MotionRecorderManager::MotionRecorderManager(std::string sourceStreamPath, std::
 void MotionRecorderManager::startMotionDetection()
 {
     mThreadRunning = true;
-    mMotionDetected = false;
+    mIsRecording = false;
     mThreadFrameAcquisition = new std::thread (&CV_FrameAcquisitor::runAcquisition, mFrameAcquisitor, &mThreadRunning);
     mThreadMotionController = new std::thread (&CV_MotionController::startMotionDetection, mMotionController, &mThreadRunning,
-                                               &mSecondsAfterMotionFinishes, &mMotionDetected);
+                                               &mSecondsAfterMotionFinishes, &mIsRecording);
 
     mCallbackFunction(mThreadRunning);
 }
@@ -69,9 +69,9 @@ const std::string &MotionRecorderManager::getSourceStreamPath() const
     return mSourceStreamPath;
 }
 
-bool MotionRecorderManager::isMotionDetected() const
+bool MotionRecorderManager::isRecordingVideo() const
 {
-    return mMotionDetected;
+    return mIsRecording;
 }
 
 bool MotionRecorderManager::isMotionDetectionRunning() const

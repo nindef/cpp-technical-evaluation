@@ -21,14 +21,14 @@ MotionRecorderWidget::MotionRecorderWidget(std::shared_ptr<MotionRecorderManager
     onMotDetStatusChanged = [=](bool isMotionDetectionRunning){
         if (isMotionDetectionRunning)
         {
-            mStatusDetectionButton->setIcon(mStatusRecordingIcon.pixmap(25,25,QIcon::Active));
-            mCamRecordingLabel->setPixmap(mMotionDetIcon.pixmap(30, 30, QIcon::Normal));
+            mStatusDetectionButton->setIcon(mRecordButtonIcon.pixmap(25,25,QIcon::Active));
+            mCamRecordingLabel->setPixmap(mRecordingStatusIcon.pixmap(30, 30, QIcon::Normal));
             mIconBlinkTimer->start ();
         }
         else
         {
-            mStatusDetectionButton->setIcon(mStatusRecordingIcon.pixmap(25,25,QIcon::Normal));
-            mCamRecordingLabel->setPixmap(mMotionDetIcon.pixmap(30, 30, QIcon::Disabled));
+            mStatusDetectionButton->setIcon(mRecordButtonIcon.pixmap(25,25,QIcon::Normal));
+            mCamRecordingLabel->setPixmap(mRecordingStatusIcon.pixmap(30, 30, QIcon::Disabled));
             mIconBlinkTimer->stop ();
         }
     };
@@ -106,16 +106,16 @@ void MotionRecorderWidget::updateCamRecordingIcon()
     }
 
     mIconBlinkVisible = !mIconBlinkVisible;
-    if (mMotionRecorderManager->isMotionDetected())
+    if (mMotionRecorderManager->isRecordingVideo())
     {
         if (mIconBlinkVisible)
-            mCamRecordingLabel->setPixmap(mMotionDetIcon.pixmap(30, 30, QIcon::Active));
+            mCamRecordingLabel->setPixmap(mRecordingStatusIcon.pixmap(30, 30, QIcon::Active));
         else
-            mCamRecordingLabel->setPixmap(mMotionDetIcon.pixmap(30, 30, QIcon::Selected));
+            mCamRecordingLabel->setPixmap(mRecordingStatusIcon.pixmap(30, 30, QIcon::Selected));
     }
     else
     {
-        mCamRecordingLabel->setPixmap(mMotionDetIcon.pixmap(30, 30, QIcon::Normal));
+        mCamRecordingLabel->setPixmap(mRecordingStatusIcon.pixmap(30, 30, QIcon::Normal));
     }
 }
 
@@ -130,11 +130,11 @@ void MotionRecorderWidget::onStatusDetectionButtonClicked()
 
 void MotionRecorderWidget::initResources()
 {
-    mMotionDetIcon.addFile("://cam_rec", QSize(), QIcon::Active);
-    mMotionDetIcon.addFile("://cam_rec_blink", QSize(), QIcon::Selected);
-    mMotionDetIcon.addFile("://cam_no_motion", QSize(), QIcon::Normal);
-    mMotionDetIcon.addFile("://cam_off", QSize(), QIcon::Disabled);
+    mRecordingStatusIcon.addFile("://cam_rec", QSize(), QIcon::Active);
+    mRecordingStatusIcon.addFile("://cam_rec_blink", QSize(), QIcon::Selected);
+    mRecordingStatusIcon.addFile("://cam_no_motion", QSize(), QIcon::Normal);
+    mRecordingStatusIcon.addFile("://cam_off", QSize(), QIcon::Disabled);
 
-    mStatusRecordingIcon.addFile("://record", QSize(), QIcon::Normal);
-    mStatusRecordingIcon.addFile("://stop", QSize(), QIcon::Active);
+    mRecordButtonIcon.addFile("://record", QSize(), QIcon::Normal);
+    mRecordButtonIcon.addFile("://stop", QSize(), QIcon::Active);
 }

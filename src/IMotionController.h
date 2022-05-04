@@ -40,13 +40,13 @@ public:
      * @brief startMotionDetection Starts efectively the motion detection process.
      * @param [in] threadRunning This flag tells when this process has to stop
      * @param [in] secondsAfterMotionFinishes This value represents the seconds
-     * @param [out] outMotionDetected This value states the if motion is being detected by the MockMotionDetector
+     * @param [out] isRecording This value states the if the controller is writing video after motion has been detected
      */
-    void startMotionDetection (bool* threadRunning, int* secondsAfterMotionFinishes, bool* outMotionDetected)
+    void startMotionDetection (bool* threadRunning, int* secondsAfterMotionFinishes, bool* isRecording)
     {
         assert(threadRunning != nullptr);
         assert(secondsAfterMotionFinishes != nullptr);
-        assert(outMotionDetected != nullptr);
+        assert(isRecording != nullptr);
         assert(mMotionDetector != nullptr);
         assert(mFrameWriter != nullptr);
 
@@ -60,25 +60,23 @@ public:
 
                 if (motionDetected)
                 {
-                    *outMotionDetected = true;
+                    *isRecording = true;
                     numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * mFrameWriter->getFPS();
                     mFrameWriter->writeFrame(std::move(second));
-                    mDataModel->freeNFrames(1);
                 }
                 else if (numFramesAfterMotionUndetected > 0)
                 {
-                    *outMotionDetected = true;
+                    *isRecording = true;
 
                     //write during N frames more
                     numFramesAfterMotionUndetected--;
                     mFrameWriter->writeFrame(std::move(second));
-                    mDataModel->freeNFrames(1);
                 }
                 else
                 {
-                    *outMotionDetected = false;
-                    mDataModel->freeNFrames(1);
+                    *isRecording = false;
                 }
+                mDataModel->freeNFrames(1);
             }
         }
         mFrameWriter->closeFile ();
