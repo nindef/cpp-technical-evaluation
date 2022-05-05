@@ -21,7 +21,8 @@ void CV_FrameWriter::writeFrame(Mat frame)
             outputDir.mkdir(videosFolder);
 
         mSourceConfig = mDataModel->getSrcVideoConfig();
-        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, mSourceConfig.fourcc, mSourceConfig.fps, Size(mSourceConfig.width, mSourceConfig.height));
+        const auto fourcc = VideoWriter::fourcc('a','v','c','1');
+        mVideoWriter->open(videosFolder.toStdString() + finalOutputName, fourcc, mSourceConfig.fps, Size(mSourceConfig.width, mSourceConfig.height));
     }
 
     mVideoWriter->write(frame);
