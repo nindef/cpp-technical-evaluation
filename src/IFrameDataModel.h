@@ -70,25 +70,7 @@ public:
      * The image will keep its aspect ratio so this is actually the maximum size for the pixmap, in the best case.
      * @return True if the pixmap has been successfully create, false otherwise.
      */
-    bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize)
-    {
-        FD frame;
-        mMutex.lock();
-        if (!mFramesBuffer.empty())
-        {
-            frame = mFramesBuffer[0];
-            QImage image(getData(frame), getCols(frame), getRows(frame), QImage::Format_RGB888);
-            image = image.rgbSwapped ();
-            image = image.scaled(dstSize, Qt::KeepAspectRatio);
-            pixmap = QPixmap::fromImage(image);
-
-            mMutex.unlock();
-            return true;
-        }
-
-        mMutex.unlock();
-        return false;
-    }
+    virtual bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize) = 0;
 
     /**
      * @brief getFirstTwoFrames Gets the first and the second frames stored in this class deque.
@@ -138,12 +120,11 @@ public:
     }
 
 protected:
-    virtual unsigned char* getData(FD& frame) = 0;
-    virtual uint getCols(FD& frame) = 0;
-    virtual uint getRows(FD& frame) = 0;
-
-private:
     std::mutex mMutex;
     std::deque<FD> mFramesBuffer;
     VideoConfig mSrcConfig;
+
+    virtual unsigned char* getData(FD& frame) = 0;
+    virtual uint getCols(FD& frame) = 0;
+    virtual uint getRows(FD& frame) = 0;
 };

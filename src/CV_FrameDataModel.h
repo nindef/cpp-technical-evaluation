@@ -11,13 +11,18 @@ using namespace cv;
  */
 class CV_FrameDataModel : public IFrameDataModel<Mat>
 {
+public:
+
+    /**
+     * @brief getCurrentFramePixmap Gets the current frame (frame in first place in deque) as a QPixmap
+     * @param pixmap The destiny QPixmap
+     * @param dstSize The desired size for the resulting pixmap.
+     * The image will keep its aspect ratio so this is actually the maximum size for the pixmap, in the best case.
+     * @return True if the pixmap has been successfully create, false otherwise.
+     */
+    bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize) override;
 protected:
     unsigned char* getData(Mat& frame) override;
     uint getCols(Mat& frame) override;
     uint getRows(Mat& frame) override;
-
-private:
-    std::mutex mMutex;
-    std::deque<Mat> mFramesBuffer;
-    VideoConfig mSrcConfig;
 };
