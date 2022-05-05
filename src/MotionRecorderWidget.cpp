@@ -7,7 +7,7 @@
 #include <QTimer>
 
 
-MotionRecorderWidget::MotionRecorderWidget(std::shared_ptr<MotionRecorderManager> motionRecorderManager, QWidget *parent)
+MotionRecorderWidget::MotionRecorderWidget(std::shared_ptr<CV_MotionRecorderManager> motionRecorderManager, QWidget *parent)
     : QWidget(parent), mMotionRecorderManager(motionRecorderManager)
 {
     setFixedHeight(120);

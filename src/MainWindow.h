@@ -4,7 +4,7 @@
 
 class QVBoxLayout;
 class QMediaPlayer;
-class MotionRecorderManager;
+class CV_MotionRecorderManager;
 
 class MainWindow : public QMainWindow
 {
@@ -22,7 +22,7 @@ public:
      * and inserts it into this window layout.
      * @param motionDetection The MotionRecorderManager object
      */
-    void addMotionRecorder(std::shared_ptr<MotionRecorderManager> motionDetection);
+    void addMotionRecorder(std::shared_ptr<CV_MotionRecorderManager> motionDetection);
 
 private:
     QVBoxLayout* mGlobalLayout;

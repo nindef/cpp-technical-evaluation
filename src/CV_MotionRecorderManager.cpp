@@ -1,4 +1,4 @@
-#include "MotionRecorderManager.h"
+#include "CV_MotionRecorderManager.h"
 
 #include "CV_FrameAcquisitor.h"
 #include "CV_MotionController.h"
@@ -6,7 +6,7 @@
 #include "CV_FrameDataModel.h"
 
 
-MotionRecorderManager::MotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) : mSourceStreamPath (sourceStreamPath)
+CV_MotionRecorderManager::CV_MotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) : mSourceStreamPath (sourceStreamPath)
 {
     mDataModel = std::make_shared<CV_FrameDataModel>();
     const auto frameWriter = std::make_shared<CV_FrameWriter>();
@@ -24,7 +24,7 @@ MotionRecorderManager::MotionRecorderManager(std::string sourceStreamPath, std::
     mMotionController->setFrameWriter(frameWriter);
 }
 
-void MotionRecorderManager::startMotionDetection()
+void CV_MotionRecorderManager::startMotionDetection()
 {
     mThreadRunning = true;
     mIsRecording = false;
@@ -35,7 +35,7 @@ void MotionRecorderManager::startMotionDetection()
     mCallbackFunction(mThreadRunning);
 }
 
-void MotionRecorderManager::stopMotionDetection ()
+void CV_MotionRecorderManager::stopMotionDetection ()
 {
     if (mThreadRunning)
     {
@@ -54,32 +54,32 @@ void MotionRecorderManager::stopMotionDetection ()
     mCallbackFunction(mThreadRunning);
 }
 
-void MotionRecorderManager::setCallbackFunctionOnStatusChange(std::function<void (bool)> callbackFunction)
+void CV_MotionRecorderManager::setCallbackFunctionOnStatusChange(std::function<void (bool)> callbackFunction)
 {
     mCallbackFunction = callbackFunction;
 }
 
-void MotionRecorderManager::setSecondsAfterMotionFinishes(int seconds)
+void CV_MotionRecorderManager::setSecondsAfterMotionFinishes(int seconds)
 {
     mSecondsAfterMotionFinishes = seconds;
 }
 
-const std::string &MotionRecorderManager::getSourceStreamPath() const
+const std::string &CV_MotionRecorderManager::getSourceStreamPath() const
 {
     return mSourceStreamPath;
 }
 
-bool MotionRecorderManager::isRecordingVideo() const
+bool CV_MotionRecorderManager::isRecordingVideo() const
 {
     return mIsRecording;
 }
 
-bool MotionRecorderManager::isMotionDetectionRunning() const
+bool CV_MotionRecorderManager::isMotionDetectionRunning() const
 {
     return mThreadRunning;
 }
 
-bool MotionRecorderManager::getCurrentFrame(QPixmap &pixmap, QSize size)
+bool CV_MotionRecorderManager::getCurrentFrame(QPixmap &pixmap, QSize size)
 {
     if (mThreadRunning)
         return mDataModel->getCurrentFramePixmap(pixmap, size);

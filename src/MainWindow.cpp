@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "MotionRecorderManager.h"
+#include "CV_MotionRecorderManager.h"
 #include "MotionRecorderWidget.h"
 
 #include <QCoreApplication>
@@ -73,7 +73,7 @@ void MainWindow::onConfigButtonClicked()
     }
 }
 
-void MainWindow::addMotionRecorder(std::shared_ptr<MotionRecorderManager> motionDetection)
+void MainWindow::addMotionRecorder(std::shared_ptr<CV_MotionRecorderManager> motionDetection)
 {
     const auto camWidget = new MotionRecorderWidget(motionDetection, this);
     connect (this, &MainWindow::secondsAfterMotionFinishesChanged,

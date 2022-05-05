@@ -12,11 +12,11 @@ class CV_FrameDataModel;
 class CV_MotionController;
 class CV_FrameAcquisitor;
 
-class MotionRecorderManager
+class CV_MotionRecorderManager
 {
 public:
-    MotionRecorderManager (std::string sourceStreamPath, std::string outputVideoBaseName);
-    ~MotionRecorderManager () {};
+    CV_MotionRecorderManager (std::string sourceStreamPath, std::string outputVideoBaseName);
+    ~CV_MotionRecorderManager () {};
 
     void startMotionDetection ();
     void stopMotionDetection();

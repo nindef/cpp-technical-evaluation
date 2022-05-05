@@ -15,8 +15,8 @@ add_executable(MotionRecorder main.cpp
                           IFrameWriter.h
                           CV_FrameWriter.h
                           CV_FrameWriter.cpp
-                          MotionRecorderManager.h
-                          MotionRecorderManager.cpp
+                          CV_MotionRecorderManager.h
+                          CV_MotionRecorderManager.cpp
                           motion_detector/include/motion_detector.hpp
                           resources.qrc
                           ${APP_ICON_RESOURCE_WINDOWS})

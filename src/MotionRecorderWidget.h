@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MotionRecorderManager.h"
+#include "CV_MotionRecorderManager.h"
 
 #include <QWidget>
 #include <QIcon>
@@ -22,7 +22,7 @@ public:
      * @param motionRecorderManager The MotionRecorderManager object.
      * @param parent The parent QWidget.
      */
-    MotionRecorderWidget(std::shared_ptr<MotionRecorderManager> motionRecorderManager, QWidget *parent = nullptr);
+    MotionRecorderWidget(std::shared_ptr<CV_MotionRecorderManager> motionRecorderManager, QWidget *parent = nullptr);
 
     /**
      * @brief ~MotionRecorderWidget Default destructor.
@@ -45,7 +45,7 @@ protected:
     void showEvent(QShowEvent *event) override;
 
 private:
-    std::shared_ptr<MotionRecorderManager> mMotionRecorderManager;
+    std::shared_ptr<CV_MotionRecorderManager> mMotionRecorderManager;
     QLabel* mCamRecordingLabel = nullptr;
     QLabel* mFrameLabel = nullptr;
     bool mIconBlinkVisible = false;

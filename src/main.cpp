@@ -1,5 +1,5 @@
 
-#include "MotionRecorderManager.h"
+#include "CV_MotionRecorderManager.h"
 #include "MainWindow.h"
 
 
@@ -17,9 +17,9 @@ int main(int argc, char *argv[])
 
     const auto w = new MainWindow;
 
-    const auto cam1 = std::make_shared<MotionRecorderManager>("rtsp://localhost:61250/cam01", "outputcam1");
-    const auto cam2 = std::make_shared<MotionRecorderManager>("rtsp://localhost:61250/cam02", "outputcam2");
-    const auto cam3 = std::make_shared<MotionRecorderManager>("rtsp://localhost:61250/cam01", "outputcam3");
+    const auto cam1 = std::make_shared<CV_MotionRecorderManager>("rtsp://localhost:61250/cam01", "outputcam1");
+    const auto cam2 = std::make_shared<CV_MotionRecorderManager>("rtsp://localhost:61250/cam02", "outputcam2");
+    const auto cam3 = std::make_shared<CV_MotionRecorderManager>("rtsp://localhost:61250/cam01", "outputcam3");
 
     w->addMotionRecorder(cam1);
     w->addMotionRecorder(cam2);
