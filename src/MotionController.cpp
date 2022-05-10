@@ -1,5 +1,8 @@
 #include "MotionController.h"
 
+#include <QDateTime>
+#include <QDebug>
+#include <QElapsedTimer>
 
 void MotionController::setMotionDetector(std::shared_ptr<MockMotionDetector<std::shared_ptr<IFrameType> > > motionDetector)
 {
@@ -36,6 +39,10 @@ void MotionController::startMotionDetection(bool *threadRunning, int *secondsAft
     mMotionDetector->initializeMotionVector();
 
     auto numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * mFrameWriter->getFPS();
+    auto isMotionDetected = false;
+
+    auto numFramesRecorded = 0.;
+
     while (*threadRunning)
     {
         const auto framesPair = mDataModel->getFirstTwoFrames ();
@@ -43,8 +50,24 @@ void MotionController::startMotionDetection(bool *threadRunning, int *secondsAft
         {
             const auto motionDetected = (mMotionDetector->detect(framesPair.first, framesPair.second) == Motion::MOTION);
 
+            if (isMotionDetected != motionDetected)
+            {
+                const auto currentTS = QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss.zzz");
+                if ((isMotionDetected = motionDetected))
+                {
+                    qDebug ().nospace() << currentTS << " Motion detected";
+                    numFramesRecorded = 0;
+                }
+                else
+                {
+                    const auto seconds = numFramesRecorded / mFrameWriter->getFPS();
+                    qDebug ().nospace() << currentTS << " Motion not detected on camera " << QString::fromStdString(mCameraName) << ". Recorded "<< seconds << " seconds.";
+                }
+            }
+
             if (motionDetected)
             {
+                numFramesRecorded++;
                 *isRecording = true;
                 numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * mFrameWriter->getFPS();
                 mFrameWriter->writeFrame(framesPair.second);
@@ -64,5 +87,6 @@ void MotionController::startMotionDetection(bool *threadRunning, int *secondsAft
             mDataModel->freeNFrames(1);
         }
     }
+    qDebug () << "Closing file";
     mFrameWriter->closeFile ();
 }
