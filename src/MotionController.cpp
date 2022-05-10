@@ -25,6 +25,11 @@ void MotionController::startMotionDetection(bool *threadRunning, int *secondsAft
     assert(mFrameWriter != nullptr);
 
     mFrameWriter->configure(mDataModel->getSrcVideoConfig());
+
+    //mock setup
+    mMotionDetector->setFps(mFrameWriter->getFPS());
+    mMotionDetector->initializeMotionVector();
+
     auto numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * mFrameWriter->getFPS();
     while (*threadRunning)
     {
