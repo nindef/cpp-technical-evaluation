@@ -11,6 +11,19 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/MotionRecorder.rc")
+set (MOTION_RECORDER_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(APP_ICON_RESOURCE_WINDOWS ${MOTION_RECORDER_ROOT_DIR}/MotionRecorder.rc)
+
+if (CMAKE_BUILD_TYPE EQUAL "RELEASE")
+    set(OUTPUT_BIN_DIR ${MOTION_RECORDER_ROOT_DIR}/bin/Release)
+else()
+    set(OUTPUT_BIN_DIR ${MOTION_RECORDER_ROOT_DIR}/bin/Debug)
+endif()
+
+include(MotionRecorderDeploy.cmake)
 
 add_subdirectory(src)
+
+set_target_properties(MotionRecorder PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_BIN_DIR})
+

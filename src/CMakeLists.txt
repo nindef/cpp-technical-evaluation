@@ -22,13 +22,10 @@ add_executable(MotionRecorder main.cpp
                           resources.qrc
                           ${APP_ICON_RESOURCE_WINDOWS})
 
-if (CMAKE_BUILD_TYPE EQUAL "RELEASE")
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${MotionRecorder_SOURCE_DIR}/bin/release)
-else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${MotionRecorder_SOURCE_DIR}/bin/debug)
-endif()
 
 find_package(OpenCV REQUIRED COMPONENTS core highgui)
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Multimedia)
 
-target_link_libraries(MotionRecorder ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets)
+target_link_libraries(MotionRecorder ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia)
+
+deployTarget(MotionRecorder ${OUTPUT_BIN_DIR}/../${CMAKE_BUILD_TYPE}_Deploy)
