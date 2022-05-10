@@ -1,20 +1,15 @@
 #pragma once
 
-#include "IFrameDataModel.h"
+#include "FrameDataModel.h"
 #include <iostream>
 
-
-template<typename FD, typename VW>
-class IFrameWriter
+class AFrameWriter
 {
 public:
     /**
      * @brief FrameWriter Default constructor
      */
-    IFrameWriter ()
-    {
-        mVideoWriter = std::make_shared<VW>();
-    }
+    AFrameWriter () = default;
 
     /**
      * @brief setOutputVideoBaseName Sets the output file name. The extension will be mp4 and
@@ -30,7 +25,7 @@ public:
      * @brief setDataModel Sets the acquired frames model.
      * @param model The acquired frames data model shared pointer
      */
-    void setDataModel(std::shared_ptr<IFrameDataModel<FD>> model)
+    void setDataModel(std::shared_ptr<FrameDataModel> model)
     {
         mDataModel = model;
     }
@@ -40,7 +35,7 @@ public:
      * If the VideoWriter hasn't opened yet the video file, this method opens it
      * @param frame The frame to write into the video.
      */
-    virtual void writeFrame(FD frame) = 0;
+    virtual void writeFrame(std::shared_ptr<IFrameType> frame) = 0;
 
     /**
      * @brief getFPS Gets the output FPS (that actually are the same than the input video stream)
@@ -59,7 +54,6 @@ public:
 protected:
     bool *mRunning = nullptr;
     std::string mOutputVideoBaseName;
-    std::shared_ptr<IFrameDataModel<FD>> mDataModel;
-    std::shared_ptr<VW> mVideoWriter;
-    typename IFrameDataModel<FD>::VideoConfig mSourceConfig;
+    std::shared_ptr<FrameDataModel> mDataModel;
+    typename FrameDataModel::VideoConfig mSourceConfig;
 };

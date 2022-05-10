@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FrameWrapper.h"
+
 #include <QPixmap>
 #include <deque>
 #include <mutex>
@@ -7,8 +9,7 @@
 /**
  * @brief The IFrameDataModel class manages the acquired frames.
  */
-template<typename FD>
-class IFrameDataModel
+class FrameDataModel
 {
 public:
     /**
@@ -47,7 +48,7 @@ public:
      * @brief getSrcVideoConfig Gets the source video config, stored before.
      * @return The videoConfig for the source video.
      */
-    IFrameDataModel::VideoConfig& getSrcVideoConfig()
+    FrameDataModel::VideoConfig& getSrcVideoConfig()
     {
         return mSrcConfig;
     }
@@ -56,10 +57,10 @@ public:
      * @brief storeFrame Stores an acquired frame (from FramAcquisitor) into this class deque
      * @param frame The frame to store
      */
-    void storeFrame(FD frame)
+    void storeFrame(std::shared_ptr<IFrameType> frame)
     {
         mMutex.lock();
-        mFramesBuffer.push_back(std::move(frame));
+        mFramesBuffer.push_back(frame);
         mMutex.unlock();
     }
 
@@ -70,27 +71,38 @@ public:
      * The image will keep its aspect ratio so this is actually the maximum size for the pixmap, in the best case.
      * @return True if the pixmap has been successfully create, false otherwise.
      */
-    virtual bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize) = 0;
+    virtual bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize)
+    {
+        auto isPixmapSet = false;
+        mMutex.lock();
+        if (!mFramesBuffer.empty())
+        {
+            pixmap = mFramesBuffer[0]->getCurrentFramePixmap(dstSize);
+            isPixmapSet = true;
+        }
+        mMutex.unlock();
+        return isPixmapSet;
+    }
 
     /**
      * @brief getFirstTwoFrames Gets the first and the second frames stored in this class deque.
      * This is a convenience method to compare both frames in order to detect motion between them.
-     * @param [out] first The first frame
-     * @param [out] second The second frame
-     * @return True if both frames have been set, false if the deque has not the needed two frames.
+     * @return A pair with the first and the second frames. If there are no two frames available
+     * in the buffered deque, then both frames are nullptr.
      */
-    bool getFirstTwoFrames (FD& first, FD& second)
+    std::pair<std::shared_ptr<IFrameType>, std::shared_ptr<IFrameType>> getFirstTwoFrames ()
     {
-        bool areFramesSet = false;
+        std::pair<std::shared_ptr<IFrameType>, std::shared_ptr<IFrameType>> pair (nullptr, nullptr);
+
         mMutex.lock();
         if (mFramesBuffer.size() >= 2)
         {
-            first = mFramesBuffer[0];
-            second = mFramesBuffer[1];
-            areFramesSet = true;
+            pair.first = mFramesBuffer[0];
+            pair.second = mFramesBuffer[1];
         }
         mMutex.unlock();
-        return areFramesSet;
+
+        return pair;
     }
 
     /**
@@ -121,10 +133,21 @@ public:
 
 protected:
     std::mutex mMutex;
-    std::deque<FD> mFramesBuffer;
+    std::deque<std::shared_ptr<IFrameType>> mFramesBuffer;
     VideoConfig mSrcConfig;
 
-    virtual unsigned char* getData(FD& frame) = 0;
-    virtual uint getCols(FD& frame) = 0;
-    virtual uint getRows(FD& frame) = 0;
+    virtual const unsigned char* getData(IFrameType& frame)
+    {
+        return frame.getData();
+    };
+
+    virtual uint getCols(IFrameType& frame)
+    {
+        return frame.getCols();
+    };
+
+    virtual uint getRows(IFrameType& frame)
+    {
+        return frame.getRows();
+    };
 };

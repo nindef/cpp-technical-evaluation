@@ -6,7 +6,12 @@
 #include <QApplication>
 
 
-void CV_FrameWriter::writeFrame(Mat frame)
+CV_FrameWriter::CV_FrameWriter()
+{
+    mVideoWriter = std::make_shared<VideoWriter>();
+}
+
+void CV_FrameWriter::writeFrame(std::shared_ptr<IFrameType> frame)
 {
     assert(mDataModel != nullptr);
 
@@ -25,7 +30,8 @@ void CV_FrameWriter::writeFrame(Mat frame)
         mVideoWriter->open(videosFolder.toStdString() + finalOutputName, fourcc, mSourceConfig.fps, Size(mSourceConfig.width, mSourceConfig.height));
     }
 
-    mVideoWriter->write(frame);
+    const auto cvFrame = std::dynamic_pointer_cast<CVFrameWrapper>(frame);
+    mVideoWriter->write(*cvFrame->getFrame());
 }
 
 void CV_FrameWriter::closeFile()

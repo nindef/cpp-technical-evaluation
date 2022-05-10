@@ -101,9 +101,7 @@ void MotionRecorderWidget::updateCamRecordingIcon()
 {
     QPixmap currentFrame;
     if (mMotionRecorderManager->getCurrentFrame(currentFrame, mFrameLabel->size ()))
-    {
         mFrameLabel->setPixmap(currentFrame);
-    }
 
     mIconBlinkVisible = !mIconBlinkVisible;
     if (mMotionRecorderManager->isRecordingVideo())

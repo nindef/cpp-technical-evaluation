@@ -1,26 +1,21 @@
 #pragma once
 
 #include <iostream>
-#include "IFrameDataModel.h"
+#include "FrameDataModel.h"
 
-template<typename FT, typename VC>
-class IFrameAcquisitor
+class AFrameAcquisitor
 {
 public:
     /**
      * @brief ~IFrameAcquisitor Default destructor. Releases the VideoCapture object.
      */
-    ~IFrameAcquisitor()
-    {
-        if (mVideoCapture != nullptr)
-            mVideoCapture->release();
-    }
+    ~AFrameAcquisitor() = default;
 
     /**
      * @brief setDataModel Sets the acquired frames model.
      * @param model The acquired frames data model shared pointer
      */
-    void setDataModel(std::shared_ptr<IFrameDataModel<FT>> model)
+    void setDataModel(std::shared_ptr<FrameDataModel> model)
     {
         mDataModel = model;
     }
@@ -38,6 +33,5 @@ public:
 
 protected:
     bool *mThreadRunning = nullptr;
-    std::shared_ptr<VC> mVideoCapture;
-    std::shared_ptr<IFrameDataModel<FT>> mDataModel;
+    std::shared_ptr<FrameDataModel> mDataModel;
 };
