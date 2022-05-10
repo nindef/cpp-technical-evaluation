@@ -11,6 +11,11 @@ CV_FrameWriter::CV_FrameWriter()
     mVideoWriter = std::make_shared<VideoWriter>();
 }
 
+void CV_FrameWriter::configure(const FrameDataModel::VideoConfig &videoConfig)
+{
+    mSourceConfig = videoConfig;
+}
+
 void CV_FrameWriter::writeFrame(std::shared_ptr<IFrameType> frame)
 {
     assert(mDataModel != nullptr);
@@ -25,7 +30,6 @@ void CV_FrameWriter::writeFrame(std::shared_ptr<IFrameType> frame)
         if (!outputDir.exists())
             outputDir.mkdir(videosFolder);
 
-        mSourceConfig = mDataModel->getSrcVideoConfig();
         const auto fourcc = VideoWriter::fourcc('a','v','c','1');
         mVideoWriter->open(videosFolder.toStdString() + finalOutputName, fourcc, mSourceConfig.fps, Size(mSourceConfig.width, mSourceConfig.height));
     }

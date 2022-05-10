@@ -24,18 +24,21 @@ void CV_FrameAcquisitor::configure(std::string sourceStreamPath)
 #else
     setenv("OPENCV_FFMPEG_CAPTURE_OPTIONS", "rtsp_transport;udp", 1);
 #endif
-}
 
-void CV_FrameAcquisitor::runAcquisition(bool* threadRunning)
-{
-    if (mVideoCapture != nullptr && mVideoCapture->isOpened())
+    if (mVideoCapture->isOpened())
     {
         const auto fourcc = mVideoCapture->get(CAP_PROP_FOURCC);
         const auto fps = mVideoCapture->get(CAP_PROP_FPS);
         const auto size = Size(mVideoCapture->get(CAP_PROP_FRAME_WIDTH), mVideoCapture->get(CAP_PROP_FRAME_HEIGHT));
         FrameDataModel::VideoConfig videoConfig (fourcc, fps, size.width, size.height);
         mDataModel->setSrcVideoConfig(videoConfig);
+    }
+}
 
+void CV_FrameAcquisitor::runAcquisition(bool* threadRunning)
+{
+    if (mVideoCapture != nullptr && mVideoCapture->isOpened())
+    {
         while(*threadRunning)
         {
             Mat mat;

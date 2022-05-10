@@ -24,6 +24,7 @@ void MotionController::startMotionDetection(bool *threadRunning, int *secondsAft
     assert(mMotionDetector != nullptr);
     assert(mFrameWriter != nullptr);
 
+    mFrameWriter->configure(mDataModel->getSrcVideoConfig());
     auto numFramesAfterMotionUndetected = *secondsAfterMotionFinishes * mFrameWriter->getFPS();
     while (*threadRunning)
     {

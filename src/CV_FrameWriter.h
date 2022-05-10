@@ -15,6 +15,8 @@ class CV_FrameWriter : public AFrameWriter
 public:
     CV_FrameWriter ();
 
+    void configure(const FrameDataModel::VideoConfig& videoConfig) override;
+
     /**
      * @brief writeFrame Writes the frame into the video by using the VideoWriter.
      * If the VideoWriter hasn't opened yet the video file, this method opens it

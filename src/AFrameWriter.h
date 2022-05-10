@@ -31,6 +31,12 @@ public:
     }
 
     /**
+     * @brief configure Sets the configuration for the output video
+     * @param videoConfig The video configuration for the output video
+     */
+    virtual void configure(const FrameDataModel::VideoConfig& videoConfig) = 0;
+
+    /**
      * @brief writeFrame Writes the frame into the video by using the VideoWriter.
      * If the VideoWriter hasn't opened yet the video file, this method opens it
      * @param frame The frame to write into the video.
