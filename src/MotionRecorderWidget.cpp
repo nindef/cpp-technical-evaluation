@@ -42,6 +42,7 @@ MotionRecorderWidget::~MotionRecorderWidget()
 
     if (mMotionRecorderManager->isMotionDetectionRunning())
     {
+        mMotionRecorderManager->unsetCallbackFunctionOnStatusChange();
         mMotionRecorderManager->stopMotionDetection();
     }
 }

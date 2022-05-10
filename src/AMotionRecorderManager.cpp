@@ -8,7 +8,7 @@
 AMotionRecorderManager::AMotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) :
     mSourceStreamPath (sourceStreamPath), mOutputVideoBaseName(outputVideoBaseName)
 {
-
+    mCallbackFunction = [=](bool){};
 }
 
 void AMotionRecorderManager::startMotionDetection()
@@ -41,12 +41,18 @@ void AMotionRecorderManager::stopMotionDetection ()
             delete mThreadFrameAcquisition;
         }
     }
+
     mCallbackFunction(mThreadRunning);
 }
 
 void AMotionRecorderManager::setCallbackFunctionOnStatusChange(std::function<void (bool)> callbackFunction)
 {
     mCallbackFunction = callbackFunction;
+}
+
+void AMotionRecorderManager::unsetCallbackFunctionOnStatusChange()
+{
+    mCallbackFunction = [=](bool){};
 }
 
 void AMotionRecorderManager::setSecondsAfterMotionFinishes(int seconds)

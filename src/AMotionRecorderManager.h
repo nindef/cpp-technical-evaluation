@@ -21,6 +21,7 @@ public:
     void stopMotionDetection();
 
     void setCallbackFunctionOnStatusChange (std::function<void(bool)> callbackFunction);
+    void unsetCallbackFunctionOnStatusChange ();
 
     void setSecondsAfterMotionFinishes (int seconds);
 
