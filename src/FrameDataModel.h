@@ -65,23 +65,17 @@ public:
     }
 
     /**
-     * @brief getCurrentFramePixmap Gets the current frame (frame in first place in deque) as a QPixmap
-     * @param pixmap The destiny QPixmap
-     * @param dstSize The desired size for the resulting pixmap.
-     * The image will keep its aspect ratio so this is actually the maximum size for the pixmap, in the best case.
-     * @return True if the pixmap has been successfully create, false otherwise.
+     * @brief getFirstFrame Gets the first frame buffered
+     * @return The first frame
      */
-    virtual bool getCurrentFramePixmap(QPixmap& pixmap, QSize dstSize)
+    std::shared_ptr<IFrameType> getFirstFrame ()
     {
-        auto isPixmapSet = false;
+        std::shared_ptr<IFrameType> frame;
         mMutex.lock();
         if (!mFramesBuffer.empty())
-        {
-            pixmap = mFramesBuffer[0]->getCurrentFramePixmap(dstSize);
-            isPixmapSet = true;
-        }
+            frame = mFramesBuffer[0];
         mMutex.unlock();
-        return isPixmapSet;
+        return frame;
     }
 
     /**

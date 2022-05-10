@@ -78,7 +78,14 @@ bool AMotionRecorderManager::isMotionDetectionRunning() const
 bool AMotionRecorderManager::getCurrentFrame(QPixmap &pixmap, QSize size)
 {
     if (mThreadRunning && mMembersBuilt)
-        return mDataModel->getCurrentFramePixmap(pixmap, size);
+    {
+        const auto frame = mDataModel->getFirstFrame ();
+        if (frame != nullptr)
+        {
+            pixmap = frame->getCurrentFramePixmap(size);
+            return true;
+        }
+    }
 
     return false;
 }
