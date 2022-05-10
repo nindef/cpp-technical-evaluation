@@ -14,7 +14,7 @@ class AFrameAcquisitor;
 class AMotionRecorderManager
 {
 public:
-    AMotionRecorderManager (std::string sourceStreamPath, std::string outputVideoBaseName);
+    AMotionRecorderManager (std::string sourceStreamPath, std::string cameraName);
     ~AMotionRecorderManager () {};
 
     void startMotionDetection ();
@@ -37,6 +37,7 @@ protected:
     int mSecondsAfterMotionFinishes = 2;
     std::string mSourceStreamPath;
     std::string mOutputVideoBaseName;
+    std::string mCameraName;
     std::thread * mThreadFrameAcquisition;
     std::thread * mThreadMotionController;
     std::function<void (bool)> mCallbackFunction;

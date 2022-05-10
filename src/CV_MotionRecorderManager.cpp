@@ -6,8 +6,8 @@
 #include "FrameDataModel.h"
 
 
-CV_MotionRecorderManager::CV_MotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) :
-    AMotionRecorderManager (sourceStreamPath, outputVideoBaseName)
+CV_MotionRecorderManager::CV_MotionRecorderManager(std::string sourceStreamPath, std::string cameraName) :
+    AMotionRecorderManager (sourceStreamPath, cameraName)
 {
 }
 
@@ -27,5 +27,6 @@ void CV_MotionRecorderManager::buildMembers()
     mMotionController->setMotionDetector(motionDetector);
     mMotionController->setDataModel(mDataModel);
     mMotionController->setFrameWriter(frameWriter);
+    mMotionController->setCameraName(mCameraName);
 }
 

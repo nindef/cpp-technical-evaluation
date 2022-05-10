@@ -5,8 +5,8 @@
 #include "MotionController.h"
 
 
-AMotionRecorderManager::AMotionRecorderManager(std::string sourceStreamPath, std::string outputVideoBaseName) :
-    mSourceStreamPath (sourceStreamPath), mOutputVideoBaseName(outputVideoBaseName)
+AMotionRecorderManager::AMotionRecorderManager(std::string sourceStreamPath, std::string cameraName) :
+    mSourceStreamPath (sourceStreamPath), mOutputVideoBaseName("rec_"+cameraName), mCameraName(cameraName)
 {
     mCallbackFunction = [=](bool){};
 }

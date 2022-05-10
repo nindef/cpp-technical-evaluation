@@ -16,6 +16,11 @@ void MotionController::setFrameWriter(std::shared_ptr<AFrameWriter> frameWriter)
     mFrameWriter = frameWriter;
 }
 
+void MotionController::setCameraName(string cameraName)
+{
+    mCameraName = cameraName;
+}
+
 void MotionController::startMotionDetection(bool *threadRunning, int *secondsAfterMotionFinishes, bool *isRecording)
 {
     assert(threadRunning != nullptr);

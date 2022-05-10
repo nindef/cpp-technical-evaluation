@@ -27,6 +27,8 @@ public:
      */
     void setFrameWriter(std::shared_ptr<AFrameWriter> frameWriter);
 
+    void setCameraName (std::string cameraName);
+
     /**
      * @brief startMotionDetection Starts efectively the motion detection process.
      * @param [in] threadRunning This flag tells when this process has to stop
@@ -39,4 +41,5 @@ protected:
     std::shared_ptr<FrameDataModel> mDataModel;
     std::shared_ptr<AFrameWriter> mFrameWriter;
     std::shared_ptr<MockMotionDetector<std::shared_ptr<IFrameType>>> mMotionDetector;
+    std::string mCameraName;
 };

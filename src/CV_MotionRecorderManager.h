@@ -15,7 +15,7 @@ class CV_FrameAcquisitor;
 class CV_MotionRecorderManager : public AMotionRecorderManager
 {
 public:
-    CV_MotionRecorderManager (std::string sourceStreamPath, std::string outputVideoBaseName);
+    CV_MotionRecorderManager (std::string sourceStreamPath, std::string cameraName);
 
     void buildMembers () override;
 };
