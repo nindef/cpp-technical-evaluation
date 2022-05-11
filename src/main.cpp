@@ -2,9 +2,14 @@
 #include "CV_MotionRecorderManager.h"
 #include "MainWindow.h"
 
+#ifdef WIN32
+#include <conio.h>
+#else
+#include <curses.h>
+#endif
+
 #include <future>
 #include <iostream>
-#include <conio.h>
 #include <QApplication>
 
 #include <QDebug>
@@ -87,7 +92,12 @@ int main(int argc, char *argv[])
         {
             while (!exitFlag)
             {
+
+#ifdef WIN32
                 const auto ch = _getch ();
+#else
+                const auto ch = getch ();
+#endif
                 exitFlag = (ch == 27); //ESC key
             }
         });

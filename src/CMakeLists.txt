@@ -28,4 +28,6 @@ find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Multimedia)
 
 target_link_libraries(MotionRecorder ${OpenCV_LIBS} Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Multimedia)
 
-deployTarget(MotionRecorder ${OUTPUT_BIN_DIR}/../${CMAKE_BUILD_TYPE}_Deploy)
+if(WIN32)
+    deployTarget(MotionRecorder ${OUTPUT_BIN_DIR}/../${CMAKE_BUILD_TYPE}_Deploy)
+endif()
